@@ -7,9 +7,10 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DATABASE_URL: postgres://postgres@postgres/crypto_data
+      DATABASE_URL: "dbname='crypto_data' user='db-user' host='postgres' password='db-user-pw'"
   postgres:
     image: postgres:9.6.2-alpine
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: db-user
+      POSTGRES_PASSWORD: db-user-pw
       POSTGRES_DB: crypto_data

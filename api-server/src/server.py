@@ -1,4 +1,9 @@
+import os
+import logging
+import psycopg2 as pglib
+import time
 from flask import Flask, request
+
 app = Flask(__name__)
 
 default_page_size = 100
@@ -49,6 +54,44 @@ def address_exposure_direct():
     return sample_res
 
 if __name__ =="__main__":
-    # TODO: connect to postgres and run migrations before starting to serve
+    db_conn = None
+    db_retries = 10
 
+    # establish db conn for migration
+    for i in range(db_retries):
+        try:
+            # connect to db
+            db_conn = pglib.connect(os.getenv("DATABASE_URL"))
+        except Exception:
+            if i < db_retries -1:
+                logging.warning("Unable to connect to db. Retrying after 5s...")
+                time.sleep(5)
+                continue
+        break
+    if not db_conn:
+        logging.error("Unable to establish db connection after {} retries. Exiting...".format(db_retries))
+        exit(1)
+
+    try:
+        # migrate tables
+        cur = db_conn.cursor()
+        migration_file = ""
+        # read table migration file
+        with open('migrations/1_transactions_table.up.sql', 'r') as file:
+            migration_file = file.read()
+
+        # execute migration
+        cur.execute(migration_file)
+        db_conn.commit()
+        logging.info("sucesfully ran db migrations")
+
+    except Exception as ex:
+        logging.error("Unable to migrate transactions table in postgres: {}\nExiting...".format(ex))
+        exit(1)
+    finally:
+        if db_conn:
+            db_conn.close()
+
+    # TODO: initial sync w/ bigquery public data
+ 
     app.run(debug=True, host="0.0.0.0", port=5000)
