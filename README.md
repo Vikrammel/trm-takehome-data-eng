@@ -1,48 +1,43 @@
 ## Overview
 
-This repo provides the boiler plate required to setup the API for the takehome BONUS section. 
+# This repo houses an api server used to query direct exposure information relating to cryptocurrency addresses
 
-This repo assumes: 
-- Familiarity with Python
-- Understanding of basic HTTP request semantics
-- Installed Conda as a package manager
+# pre-reqs: install docker-compose (version 3.2 used to write docker-compose.yml)
 
-## Getting Started
+**1. Build and run images**
 
-**1. Create your Conda Environment**
-`conda create -n <env_name> python=3.8`
-
-**2. Install the required dependencies**
-`conda install -n <env_name> requirements.txt`
-
-**3. Run the local flask Development Server**
 ```
-export FLASK_APP=app.py
-export FLASK_ENV=development
-flask run
+docker-compose build --no-cache api-server
+docker-compose up -d api-server
 ```
 
-**4. Hit the endpoint from your local browser**
+`curl localhost:5000/address/exposure/direct?address=1BQAPyku1ZibWGAgd8QePpW1vAKHowqLez`
+
+**2. Hit the endpoint from your local browser**
 Enter `http://127.0.0.1:5000/address/exposure/direct?address=1BQAPyku1ZibWGAgd8QePpW1vAKHowqLez` into your browser!
 
 You should see the following response:
 ```
 {
-  "data": [
-    { "address": "1FGhgLbMzrUV5mgwX9nkEeqHbKbUK29nbQ", "inflows": "0", "outflows": "0.01733177", "total_flows": "0.01733177" },
-    { "address": "1Huro4zmi1kD1Ln4krTgJiXMYrAkEd4YSh", "inflows": "0.01733177", "outflows": "0", "total_flows": "0.01733177" },
-  ],
-  "success": True
+  "chain": "btc", 
+  "next_offset": 2, 
+  "page_size": 100, 
+  "rank_order_flowtype": "outflow", 
+  "top_n": [
+    {
+      "both": "0.01733177", 
+      "counterparty": "1FGhgLbMzrUV5mgwX9nkEeqHbKbUK29nbQ", 
+      "inflows": "0", 
+      "outflows": "0.01733177", 
+      "rank": 1
+    }, 
+    {
+      "both": "0.01733177", 
+      "counterparty": "1Huro4zmi1kD1Ln4krTgJiXMYrAkEd4YSh", 
+      "inflows": "0.01733177", 
+      "outflows": "0", 
+      "rank": 2
+    }
+  ]
 }
 ```
-
-## Additional Details
-
-Depending on your data store, you may have to install one or more packages
-to connect via Python. I have listed the most common packages below:
-- RedShift/Postgres: [Psycopg2](https://pypi.org/project/psycopg2/)
-- MySQL: [mysqlclient](https://pypi.python.org/pypi/mysqlclient)
-- BigQuery: [google-cloud-bigquery](https://pypi.org/project/google-cloud-bigquery/)
-
-
-
