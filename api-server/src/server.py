@@ -93,5 +93,7 @@ if __name__ =="__main__":
             db_conn.close()
 
     # TODO: initial sync w/ bigquery public data
- 
+
+    # TODO: run materialized view queries to general flow data and set refresh schedule
+
     app.run(debug=True, host="0.0.0.0", port=5000)

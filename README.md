@@ -14,7 +14,7 @@ docker-compose up -d api-server
 `curl localhost:5000/address/exposure/direct?address=1BQAPyku1ZibWGAgd8QePpW1vAKHowqLez`
 
 **2. Hit the endpoint from your local browser**
-Enter `http://127.0.0.1:5000/address/exposure/direct?address=1BQAPyku1ZibWGAgd8QePpW1vAKHowqLez` into your browser!
+Enter `http://localhost:5000/address/exposure/direct?address=1BQAPyku1ZibWGAgd8QePpW1vAKHowqLez` into your browser!
 
 You should see the following response:
 ```
