@@ -1,8 +1,8 @@
 ## Overview
 
-# This repo houses an api server used to query direct exposure information relating to cryptocurrency addresses
+This repo houses an api server used to query direct exposure information relating to cryptocurrency addresses
 
-# pre-reqs: install docker-compose (version 3.2 used to write docker-compose.yml)
+pre-reqs: install docker-compose (version 3.2 used to write docker-compose.yml)
 
 **1. Build and run images**
 

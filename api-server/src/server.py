@@ -49,4 +49,6 @@ def address_exposure_direct():
     return sample_res
 
 if __name__ =="__main__":
+    # TODO: connect to postgres and run migrations before starting to serve
+
     app.run(debug=True, host="0.0.0.0", port=5000)
